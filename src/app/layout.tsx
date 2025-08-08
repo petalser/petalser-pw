@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Montserrat, Ballet, Chelsea_Market } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const chelsea = Chelsea_Market({
+  variable: "--font-chelsea",
+  weight: "400"
+})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+})
+
+const cursive = Ballet({
+  variable: "--font-cursive",
+  weight: "400"
+})
+
+
 
 export const metadata: Metadata = {
   title: "Petalser",
@@ -25,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${cursive.variable} ${montserrat.variable} ${chelsea.variable} antialiased`}
       >
         {children}
       </body>
