@@ -3,6 +3,10 @@
 :root {
   --background: #000;
   --foreground: #ddd;
+
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 @theme inline {
@@ -10,7 +14,9 @@
   --color-foreground: var(--foreground);
   --font-chelsea: var(--font-chelsea);
   --font-montserrat: var(--font-montserrat);
-  --font-cursive: var(--font-cursive)
+  --font-cursive: var(--font-cursive);
+
+  --breakpoint-big: 769px;
 }
 
 body {
