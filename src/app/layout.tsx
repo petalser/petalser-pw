@@ -29,9 +29,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="relative">
       <body
-        className={`${cursive.variable} ${montserrat.variable} ${chelsea.variable} antialiased`}
+        className={`relative ${cursive.variable} ${montserrat.variable} ${chelsea.variable} antialiased`}
       >
         {children}
       </body>
