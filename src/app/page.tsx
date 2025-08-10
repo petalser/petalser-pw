@@ -1,9 +1,12 @@
+import ActionButton from "@/components/ActionButton";
 import Hero from "@/components/Hero";
 
 export default function Home() {
   return (
-    <div className=" flex flex-col w-[100dvw] min-h-screen">
+    <div className=" flex flex-col min-h-screen">
       <Hero />
+
+      <ActionButton />
 
       <div className="h-100 bg-gray-800"></div>
 
