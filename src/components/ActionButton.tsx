@@ -9,8 +9,6 @@ export default function ActionButton() {
     const top = useSpring(0, { damping: 100, stiffness: 100, })
     const scale = useSpring(1, { damping: 100, stiffness: 100, })
 
-
-
     function handleMouseMoves(e: MouseEvent) {
         const rect = e.currentTarget.getBoundingClientRect()
         const centerY = rect.height / 2
