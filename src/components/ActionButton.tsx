@@ -1,18 +1,32 @@
 'use client'
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { MouseEvent } from "react"
-import { useSpring, motion } from "motion/react"
+import { useSpring, useTransform, motion } from "motion/react"
+
+const STIFFNESS = 300;
+const DAMPING = 50;
+const SHADOW_MORPH_MULTIPLIER = 500
+
+function normalize(cursorOffset: number) {
+    return (cursorOffset / SHADOW_MORPH_MULTIPLIER) + 1
+}
 
 export default function ActionButton() {
-    const shadowRef = useRef<HTMLButtonElement>(null)
-    const left = useSpring(0, { damping: 100, stiffness: 100, })
-    const top = useSpring(0, { damping: 100, stiffness: 100, })
-    const scale = useSpring(1, { damping: 100, stiffness: 100, })
+    const containerRef = useRef<HTMLDivElement>(null)
+    const shadowRef = useRef<HTMLDivElement>(null)
+    const left = useSpring(0, { damping: DAMPING, stiffness: STIFFNESS, })
+    const top = useSpring(0, { damping: DAMPING, stiffness: STIFFNESS, })
+    const blur = useSpring(500, { damping: DAMPING, stiffness: STIFFNESS, })
+    const scaleX = useSpring(1, { damping: DAMPING, stiffness: STIFFNESS, })
+    const scaleY = useSpring(1, { damping: DAMPING, stiffness: STIFFNESS, })
+    const conrainerBorderOpacity = useSpring(0, { damping: DAMPING, stiffness: STIFFNESS, })
+
+
 
     function handleMouseMoves(e: MouseEvent) {
         const rect = e.currentTarget.getBoundingClientRect()
-        const centerY = rect.height / 2
-        const centerX = rect.width / 2
+        const centerY = rect!.height / 2
+        const centerX = rect!.width / 2
 
         const buttonW = shadowRef.current?.offsetWidth || 0
         const buttonH = shadowRef.current?.offsetHeight || 0
@@ -22,34 +36,69 @@ export default function ActionButton() {
 
         const verticalCursorOffset = Math.abs(e.clientY - centerY - rect.top)
         const horizontalCursorOffset = Math.abs(e.clientX - centerX)
-        const distance = Math.sqrt((verticalCursorOffset ** 2) + (horizontalCursorOffset ** 2))
+
+
 
         top.set(posY)
         left.set(posX)
-        scale.set(1 + (distance / 200))
+
+        scaleX.set(normalize(horizontalCursorOffset));
+        scaleY.set(normalize(verticalCursorOffset));
+
+        blur.set(Math.max(verticalCursorOffset + horizontalCursorOffset) / 20)
+
+        conrainerBorderOpacity.set(e.clientY - centerY - rect.top)
     }
+
+    const topBorderOpacity = useTransform(conrainerBorderOpacity, [0, 50], [0, 1])
+    const bottomBorderOpacity = useTransform(conrainerBorderOpacity, [0, -50], [0, 1])
+    const filter = useTransform(blur, (b) => `blur(${b}px)`);
 
     return (
         <div
+            ref={containerRef}
             onMouseMove={handleMouseMoves}
-            className="relative w-full flex h-[50dvh] overflow-hidden">
+            className="relative w-full flex flex-col h-40 big:h-70 overflow-hidden">
+
+            {/* upper border */}
+            <motion.div
+                style={{
+                    left,
+                    opacity: topBorderOpacity
+                }}
+                className="absolute z-30 -translate-x-36 bg-gradient-to-r from-transparent via-foreground/50 to-transparent top-0 w-100 h-0.5">
+            </motion.div>
+
+            {/* button itself */}
             <button
-                className="px-4 py-2 m-auto border-2 bg-black/50 backdrop-blur-sm"
+                className="cursor-grab px-4 py-2 m-auto border-2 bg-black/50 backdrop-blur-sm"
                 role="link">
-                I'm a link
+                Say Hello
             </button>
-            <motion.button
+
+            {/* lower border */}
+            <motion.div
+                style={{
+                    left,
+                    opacity: bottomBorderOpacity
+                }}
+                className="absolute -translate-x-36 bg-gradient-to-r from-transparent via-foreground/50 to-transparent bottom-0 w-100 h-0.5">
+            </motion.div>
+
+            {/* shadow */}
+            <motion.div
                 ref={shadowRef}
                 style={{
                     left,
                     top,
-                    scale,
-                    filter: `blur(${scale.get()}px)`
+                    scaleX,
+                    scaleY,
+                    filter,
                 }}
-                className="absolute -z-10 text-nowrap top-[30%] left-10 px-4 py-2 m-auto shadow-[0_0_70px_rgb(255,255,255)] bg-black/50 backdrop-blur-sm"
+                className="absolute -z-10 top-48 text-nowrap px-4 py-2 m-auto shadow-[0_0_70px_rgb(255,255,255)] bg-black/50 backdrop-blur-sm"
                 role="link">
-                I'm a link
-            </motion.button>
+                Say Hello
+            </motion.div>
         </div>
     )
 }
