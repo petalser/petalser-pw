@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from "react";
-import { motion, rgba, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
     const ref = useRef(null);
@@ -8,10 +8,6 @@ export default function Hero() {
     const { scrollYProgress, scrollY } = useScroll({
         target: ref,
         offset: ['end end', 'end start']
-    });
-    const { scrollYProgress: fade } = useScroll({
-        target: ref,
-        offset: ['start center', 'end start']
     });
 
     const rotateX = useTransform(scrollYProgress, [0, 1], [0, 90]);
