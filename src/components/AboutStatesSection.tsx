@@ -32,39 +32,43 @@ export default function AboutStatesSection() {
     }
 
     return (
-        <section className="w-4/5 big:w-3/5 mx-auto relative overflow-hidden">
-            <h2 className="w-full mx-auto my-5 big:my-16 text-xl big:text-3xl text-white">Just like hardware, software can be in different conditions</h2>
+        <section className="w-4/5 big:w-3/5 mx-auto overflow-hidden">
+            <h2 className="w-full mx-auto my-5 big:my-16 text-xl big:text-3xl">Just like hardware, software can be in different conditions</h2>
 
             {/* carousel itself */}
-            <motion.dl
-                className="w-full h-80 mx-auto bg-black/50 backdrop-blur-sm border-2 [border-image:linear-gradient(to_right_bottom,var(--foreground),transparent,var(--foreground),transparent,var(--foreground),transparent,var(--foreground))_1] overflow-y-auto flex flex-col snap-y snap-mandatory scroll-smooth no-scrollbar">
+            <div className="relative">
 
-                {SECTIONS.map((section, i) => (
-                    <InView onChange={handleChange} threshold={0.8} key={section.title}>
-                        {({ ref }) => {
-                            return (
-                                <div id={`${i}`} ref={ref} className="size-4/5 p-4 flex flex-col gap-4 snap-center flex-none my-[10%] mx-auto rounded-xs bg-black">
-                                    <dt className="text-2xl font-semibold">{section.title}:</dt>
-                                    <dd >{section.text}</dd>
-                                </div>
-                            );
-                        }}
-                    </InView>
-                ))}
-            </motion.dl>
+                {/* carousel indicator */}
+                <div className="flex z-50 flex-col absolute top-1/2 -translate-y-1/2 right-[10%]">
+                    {SECTIONS.map((_, i) => {
+                        return <motion.div
+                            animate={{
+                                opacity: i === cardInViewIndex ? 0.8 : 0.5,
+                            }}
+                            transition={{ duration: 0.3 }}
+                            key={i}
+                            className="size-2 m-0.5 border-2 rounded-xs"
+                        ></motion.div>
+                    })}
+                </div>
 
-            {/* carousel indicator */}
-            <div className="flex flex-col absolute top-1/2 right-[10%]">
-                {SECTIONS.map((_, i) => {
-                    return <motion.div
-                        animate={{
-                            opacity: i === cardInViewIndex ? 0.8 : 0.5,
-                        }}
-                        transition={{ duration: 0.3 }}
-                        key={i}
-                        className="size-2 m-0.5 border-2 rounded-xs"
-                    ></motion.div>
-                })}
+
+                <motion.dl
+                    className="w-full h-80 relative mx-auto bg-black/50 backdrop-blur-sm border-2 [border-image:linear-gradient(to_right_bottom,transparent,var(--foreground),transparent,var(--foreground),transparent)_1] border-opacity-50 overflow-y-auto flex flex-col snap-y snap-mandatory scroll-smooth no-scrollbar">
+
+                    {SECTIONS.map((section, i) => (
+                        <InView onChange={handleChange} threshold={0.8} key={section.title}>
+                            {({ ref }) => {
+                                return (
+                                    <div id={`${i}`} ref={ref} className="size-4/5 p-4 flex flex-col gap-4 snap-center flex-none my-[10%] mx-auto rounded-xs bg-black">
+                                        <dt className="text-2xl font-semibold">{section.title}:</dt>
+                                        <dd >{section.text}</dd>
+                                    </div>
+                                );
+                            }}
+                        </InView>
+                    ))}
+                </motion.dl>
             </div>
 
             {/* "fake error" window for the last card */}
