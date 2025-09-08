@@ -4,6 +4,7 @@ import CreedSection from "@/components/CreedSection";
 import BlurryLettersWrapper from "@/components/BlurryLettersWrapper";
 import SmoothenedCard from "@/components/SmothenedCard";
 import Cards from "@/components/Cards";
+import Footer from "@/components/Footer";
 
 const STATES_HEADER_TEXT = "Just like hardware, software can be in different conditions:"
 
@@ -37,10 +38,8 @@ export default function Home() {
         <SmoothenedCard>
           <Cards headerText={SERVICES_HEADER_TEXT} content={SERVICES_CONTENT} hasFakeError={false} />
         </SmoothenedCard>
-
       </BlurryLettersWrapper>
-
-
+      <Footer />s
     </div>
   );
 }
