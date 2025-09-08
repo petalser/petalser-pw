@@ -2,6 +2,7 @@
 import { useRef } from "react"
 import { MouseEvent } from "react"
 import { useSpring, useTransform, motion, useScroll } from "motion/react"
+import RingsBGMobile from "./RingsBGMobile";
 
 const STIFFNESS = 300;
 const DAMPING = 50;
@@ -63,10 +64,7 @@ export default function ActionButton() {
             onMouseMove={handleMouseMoves}
             className="relative w-full flex flex-col h-40 big:h-70 overflow-hidden">
 
-            {/* scroll spotlight */}
-            <motion.div
-                style={{ y }}
-                className="size-150 block big:hidden bg-radial-[at_50%_50%] from-foreground/30 via-transparent to-transparent left-0 absolute"></motion.div>
+            <RingsBGMobile />
 
             {/* upper border */}
             <motion.div
